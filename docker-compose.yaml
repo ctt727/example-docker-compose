@@ -1,7 +1,19 @@
 services:
-  web:
-    build: .
+  allinone:
+    image: youshandefeiyang/allinone
+    container_name: allinone
+    privileged: true
+    restart: always
     ports:
-      - "${PORT}:5000"
-  redis:
-    image: "redis:alpine"
+      - "35455:35455"
+    network_mode: bridge
+    command: -tv=true -aesKey=zvr2ow75b6mi6uffybmphqj5bpnjlqz5 -userid=31252139 -token=f2f9a7c48db59062c7f28b1c12b0b4bedb1100e1ca7b0e1f9586eba59210e7a4f854e1b5b5d798454c991f739bcd0f485004e30dc8f1647a33dc80e29d8e85702b63cfbe62
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    command: --interval 3600 --cleanup
